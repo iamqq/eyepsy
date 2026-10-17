@@ -1,0 +1,75 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PersonCard from "../components/PersonCard.astro";
+import TopicCard from "../components/TopicCard.astro";
+import ContactList from "../components/ContactList.astro";
+import { site, topics, people } from "../lib/content";
+---
+
+<BaseLayout>
+  <!-- Hero -->
+  <section class="relative isolate overflow-hidden bg-dusk-900">
+    <img
+      src={site.hero.image}
+      alt=""
+      class="absolute inset-0 -z-10 h-full w-full object-cover"
+      loading="eager"
+    />
+    <div
+      class="absolute inset-0 -z-10 bg-gradient-to-b from-dusk-900/75 via-dusk-900/45 to-dusk-900/75"
+    >
+    </div>
+
+    <div class="mx-auto max-w-4xl px-5 py-24 text-center text-cream sm:px-8 sm:py-32">
+      <h1 class="text-4xl sm:text-5xl">{site.hero.title}</h1>
+      <figure class="mx-auto mt-8 max-w-2xl">
+        <blockquote class="text-lg italic text-cream/95">«{site.hero.quote}»</blockquote>
+        <figcaption class="mt-3 text-sm text-rose-light">— {site.hero.quoteAuthor}</figcaption>
+      </figure>
+      <div class="mt-10 flex flex-wrap justify-center gap-3">
+        <a
+          href="#team"
+          class="rounded-full bg-cream px-6 py-3 text-sm font-medium text-dusk-900 transition hover:bg-white"
+        >
+          Наши психологи
+        </a>
+        <a
+          href="#contacts"
+          class="rounded-full border border-cream/60 px-6 py-3 text-sm font-medium text-cream transition hover:bg-cream/10"
+        >
+          Записаться
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section id="team" class="py-16 sm:py-20">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8">
+      <h2 class="text-2xl text-dusk-700 sm:text-3xl">О нас</h2>
+      <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:max-w-3xl">
+        {people.map((person) => <PersonCard person={person} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Topics -->
+  <section id="topics" class="bg-lav/40 py-16 sm:py-20">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8">
+      <h2 class="text-2xl text-dusk-700 sm:text-3xl">{topics.title}:</h2>
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {topics.items.map((topic) => <TopicCard title={topic.title} text={topic.text} />)}
+      </div>
+      <p class="mt-8 max-w-3xl text-sm leading-relaxed text-muted">{topics.note}</p>
+    </div>
+  </section>
+
+  <!-- Contacts -->
+  <section id="contacts" class="py-16 sm:py-20">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8">
+      <h2 class="text-2xl text-dusk-700 sm:text-3xl">{site.cta.title}</h2>
+      <p class="mt-3 text-muted">{site.cta.subtitle}</p>
+      <ContactList contacts={site.contacts} class="mt-8 max-w-3xl" />
+    </div>
+  </section>
+</BaseLayout>

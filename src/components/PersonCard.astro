@@ -1,0 +1,36 @@
+---
+import type { Person } from "../lib/content";
+
+interface Props {
+  person: Person;
+}
+const { person } = Astro.props;
+---
+
+<article
+  class="group overflow-hidden rounded-2xl border border-line bg-cream shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+>
+  <a href={`/${person.slug}/`} class="block focus:outline-none">
+    <div class="aspect-[4/5] overflow-hidden bg-lav">
+      <img
+        src={person.photo}
+        alt={`${person.name} — ${person.role}`}
+        width="540"
+        height="675"
+        loading="lazy"
+        class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+        style={`object-position:${person.cardPhotoPosition ?? "center"}`}
+      />
+    </div>
+    <div class="p-5">
+      <h3 class="font-display text-lg font-semibold text-dusk-700">{person.name}</h3>
+      <p class="mt-0.5 text-sm text-muted">{person.cardRole}</p>
+      <span
+        class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-rose-dark group-hover:gap-2"
+      >
+        Обо мне
+        <span aria-hidden="true">&rarr;</span>
+      </span>
+    </div>
+  </a>
+</article>

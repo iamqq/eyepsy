@@ -1,0 +1,17 @@
+# Cloudflare Pages redirects.
+# Keep old Bitrix-era URLs working after the static rebuild.
+
+# Bitrix system paths -> home
+/bitrix/*            /            301
+/upload/*            /            301
+/personal/*          /            301
+/auth/*              /            301
+
+# Common legacy entry points
+/index.php           /            301
+/index.html          /            301
+/pub/site/*          /            301
+/preview/*           /            301
+
+# Profile pages keep their original paths (no redirect needed),
+# handled by /ulyana/ and /anastasiya/.

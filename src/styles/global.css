@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens for eyepsy (психологическая помощь).
+ * Palette is drawn from the original hero photo (dusk lake: muted indigo/violet
+ * with a soft rose), plus warm neutrals for long-form reading comfort.
+ */
+@theme {
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-cream: #faf7f5;
+  --color-lav: #efeaf4;
+  --color-lav-deep: #e3dcec;
+
+  --color-ink: #2c2a39;
+  --color-muted: #6f6c7e;
+  --color-line: #e5dfe9;
+
+  --color-dusk-50: #eef0f7;
+  --color-dusk-100: #dbdfee;
+  --color-dusk-300: #9aa0c4;
+  --color-dusk-500: #666a94;
+  --color-dusk-600: #565a86;
+  --color-dusk-700: #45476a;
+  --color-dusk-900: #2b2c44;
+
+  --color-rose: #c48f9d;
+  --color-rose-light: #ecd6dc;
+  --color-rose-dark: #a9707f;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background-color: var(--color-cream);
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+/* Offset anchor targets so the sticky header does not cover section titles. */
+:target {
+  scroll-margin-top: 6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

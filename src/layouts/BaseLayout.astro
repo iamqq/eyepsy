@@ -1,0 +1,189 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import site from "../data/site.json";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  nav?: { label: string; href: string }[];
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title,
+  description = site.description,
+  image = site.hero.image,
+  nav,
+  jsonLd,
+} = Astro.props;
+
+const pageTitle = title ? `${title} — ${site.title}` : site.title;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+const ogImage = new URL(image, Astro.site ?? site.url).href;
+
+const baseJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: site.title,
+  url: site.url,
+  inLanguage: site.lang,
+  description: site.description,
+};
+const jsonLdData = jsonLd
+  ? [baseJsonLd, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])]
+  : [baseJsonLd];
+---
+
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={site.keywords} />
+    <meta name="author" content={site.title} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.title} />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Structured data (JSON-LD) -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLdData)} />
+
+    <!-- Fonts served by Google Fonts (no Bitrix dependency) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap"
+    />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <Header nav={nav} />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+
+    <!-- Shared image lightbox, used by the certificates galleries -->
+    <dialog
+      id="lightbox"
+      class="m-auto w-[min(94vw,1000px)] max-w-none rounded-xl bg-dusk-900/95 p-0 text-cream backdrop:bg-dusk-900/70 backdrop:backdrop-blur-sm"
+    >
+      <div class="relative">
+        <figure class="m-0">
+          <img id="lightbox-img" src="" alt="" class="mx-auto max-h-[80vh] w-auto rounded-t-xl" />
+          <figcaption
+            id="lightbox-caption"
+            class="px-4 py-3 text-center text-sm text-dusk-100"
+          >
+          </figcaption>
+        </figure>
+        <button
+          type="button"
+          data-lb-close
+          class="absolute right-3 top-3 rounded-full bg-dusk-900/70 px-3 py-1 text-lg leading-none text-cream transition hover:bg-dusk-700"
+          aria-label="Закрыть"
+        >
+          &times;
+        </button>
+        <button
+          type="button"
+          data-lb-prev
+          class="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-dusk-900/70 px-3 py-2 text-xl leading-none text-cream transition hover:bg-dusk-700"
+          aria-label="Предыдущее изображение"
+        >
+          &#8249;
+        </button>
+        <button
+          type="button"
+          data-lb-next
+          class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-dusk-900/70 px-3 py-2 text-xl leading-none text-cream transition hover:bg-dusk-700"
+          aria-label="Следующее изображение"
+        >
+          &#8250;
+        </button>
+      </div>
+    </dialog>
+
+    <script>
+      // Lightbox: any element with [data-lightbox] opens the shared <dialog>.
+      const dlg = document.getElementById("lightbox") as HTMLDialogElement | null;
+      const img = document.getElementById("lightbox-img") as HTMLImageElement | null;
+      const cap = document.getElementById("lightbox-caption");
+      if (dlg && img && cap) {
+        let group: HTMLAnchorElement[] = [];
+        let index = 0;
+
+        const render = () => {
+          const el = group[index];
+          if (!el) return;
+          img.src = el.getAttribute("data-full") || (el as HTMLAnchorElement).href;
+          img.alt = el.getAttribute("data-title") || "";
+          cap.textContent = el.getAttribute("data-title") || "";
+        };
+
+        document.addEventListener("click", (e) => {
+          const trigger = (e.target as HTMLElement).closest("[data-lightbox]") as HTMLAnchorElement | null;
+          if (trigger) {
+            e.preventDefault();
+            const gallery = trigger.closest("[data-lightbox-group]") ?? document;
+            group = Array.from(gallery.querySelectorAll("[data-lightbox]")) as HTMLAnchorElement[];
+            index = Math.max(0, group.indexOf(trigger));
+            render();
+            dlg.showModal();
+            return;
+          }
+          const t = e.target as HTMLElement;
+          if (t.closest("[data-lb-close]")) dlg.close();
+          if (t.closest("[data-lb-prev]")) {
+            index = (index - 1 + group.length) % group.length;
+            render();
+          }
+          if (t.closest("[data-lb-next]")) {
+            index = (index + 1) % group.length;
+            render();
+          }
+        });
+
+        // Click on the backdrop closes the dialog.
+        dlg.addEventListener("click", (e) => {
+          const r = dlg.getBoundingClientRect();
+          if (
+            e.clientX < r.left ||
+            e.clientX > r.right ||
+            e.clientY < r.top ||
+            e.clientY > r.bottom
+          ) {
+            dlg.close();
+          }
+        });
+
+        dlg.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowLeft") {
+            index = (index - 1 + group.length) % group.length;
+            render();
+          }
+          if (e.key === "ArrowRight") {
+            index = (index + 1) % group.length;
+            render();
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

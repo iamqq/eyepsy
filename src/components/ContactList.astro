@@ -1,0 +1,43 @@
+---
+import type { Contact } from "../lib/content";
+
+interface Props {
+  contacts: Contact[];
+  class?: string;
+}
+const { contacts, class: className = "" } = Astro.props;
+---
+
+<ul class={`grid gap-4 sm:grid-cols-2 ${className}`}>
+  {
+    contacts.map((c) => (
+      <li class="rounded-2xl border border-line bg-cream p-6 shadow-sm">
+        <p class="font-display text-lg font-semibold text-dusk-700">{c.fullName}</p>
+        <a
+          href={`tel:${c.phone}`}
+          class="mt-1 inline-block text-xl text-ink transition-colors hover:text-dusk-700"
+        >
+          {c.phoneDisplay}
+        </a>
+        <div class="mt-4 flex flex-wrap gap-2 text-sm">
+          <a
+            href={c.telegram}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rounded-full border border-dusk-300 px-3 py-1 text-dusk-700 transition-colors hover:bg-dusk-50"
+          >
+            Telegram
+          </a>
+          <a
+            href={c.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rounded-full border border-dusk-300 px-3 py-1 text-dusk-700 transition-colors hover:bg-dusk-50"
+          >
+            WhatsApp
+          </a>
+        </div>
+      </li>
+    ))
+  }
+</ul>

@@ -1,0 +1,211 @@
+---
+import type { Person, Certificate } from "../lib/content";
+import Certificates from "./Certificates.astro";
+
+interface Props {
+  person: Person;
+  certificates: Certificate[];
+}
+const { person, certificates } = Astro.props;
+---
+
+<!-- Hero -->
+<section class="relative isolate overflow-hidden bg-dusk-900">
+  <img
+    src="/images/hero/profile.webp"
+    alt=""
+    class="absolute inset-0 -z-10 h-full w-full object-cover"
+  />
+  <div
+    class="absolute inset-0 -z-10 bg-gradient-to-r from-dusk-900/90 via-dusk-900/75 to-dusk-900/40"
+  >
+  </div>
+  <div
+    class="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1.35fr_1fr] lg:items-center"
+  >
+    <div class="text-cream">
+      <p class="text-xs uppercase tracking-[0.2em] text-rose-light">{person.role}</p>
+      <h1 class="mt-3 text-3xl sm:text-4xl">{person.name}</h1>
+      {
+        person.badge && (
+          <p class="mt-4 inline-block rounded-full border border-cream/40 px-3 py-1 text-xs text-cream/90">
+            {person.badge}
+          </p>
+        )
+      }
+      <div class="mt-6 space-y-3 text-dusk-50/90">
+        {person.intro.map((p) => <p>{p}</p>)}
+      </div>
+      {
+        person.approach && (
+          <p class="mt-6 border-l-2 border-rose pl-4 italic text-cream/90">{person.approach}</p>
+        )
+      }
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a
+          href="#contacts"
+          class="rounded-full bg-rose px-6 py-3 text-sm font-medium text-dusk-900 transition hover:bg-rose-light"
+        >
+          Контакты для записи
+        </a>
+        <a
+          href="#certificates"
+          class="rounded-full border border-cream/50 px-6 py-3 text-sm font-medium text-cream transition hover:bg-cream/10"
+        >
+          Дипломы и сертификаты
+        </a>
+      </div>
+    </div>
+
+    <div class="justify-self-center lg:justify-self-end">
+      <img
+        src={person.photo}
+        alt={person.name}
+        width="540"
+        height="675"
+        class="aspect-[4/5] w-full max-w-[18rem] rounded-2xl object-cover shadow-2xl ring-1 ring-cream/20"
+        style={`object-position:${person.cardPhotoPosition ?? "center"}`}
+      />
+    </div>
+  </div>
+</section>
+
+<!-- Quick facts -->
+<section class="border-b border-line bg-cream">
+  <div class="mx-auto max-w-6xl px-5 py-8 sm:px-8">
+    <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        person.facts.map((f) => (
+          <li class="flex items-start gap-3 text-sm text-ink">
+            <span class="mt-0.5 text-rose-dark" aria-hidden="true">
+              ✓
+            </span>
+            <span>{f}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- Extra sections (e.g. clinical psychodiagnostics) -->
+{
+  person.sections.map((section, i) => (
+    <section class:list={["py-16 sm:py-20", i % 2 === 0 && "bg-lav/30"]}>
+      <div class="mx-auto max-w-3xl px-5 sm:px-8">
+        <h2 class="text-2xl text-dusk-700 sm:text-3xl">{section.title}</h2>
+        {section.paragraphs && (
+          <div class="mt-5 space-y-4 leading-relaxed text-ink/90">
+            {section.paragraphs.map((p) => (
+              <p>{p}</p>
+            ))}
+          </div>
+        )}
+        {section.list && (
+          <div class="mt-7">
+            <p class="font-medium text-dusk-700">{section.list.title}</p>
+            <ul class="mt-3 space-y-2">
+              {section.list.items.map((item) => (
+                <li class="flex gap-3 text-ink/90">
+                  <span class="text-rose-dark" aria-hidden="true">
+                    ✓
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {section.facts && (
+          <ul class="mt-7 flex flex-wrap gap-3">
+            {section.facts.map((f) => (
+              <li class="rounded-full bg-dusk-50 px-4 py-1.5 text-sm text-dusk-700">{f}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  ))
+}
+
+<!-- Education & experience -->
+<section id="education" class="py-16 sm:py-20">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <h2 class="text-2xl text-dusk-700 sm:text-3xl">Образование и опыт работы</h2>
+    <p class="mt-5 text-lg text-ink">{person.education.base}</p>
+
+    <h3 class="mt-10 font-display text-xl text-dusk-700">
+      {person.education.experienceTitle}
+    </h3>
+    <div class="mt-3 space-y-3 leading-relaxed text-ink/90">
+      {person.education.experience.map((p) => <p>{p}</p>)}
+    </div>
+
+    <h3 class="mt-10 font-display text-xl text-dusk-700">
+      {person.education.additionalTitle}
+    </h3>
+    <ul class="mt-4 grid gap-x-10 gap-y-2 sm:grid-cols-2">
+      {
+        person.education.additional.map((item) => (
+          <li class="flex gap-3 text-sm text-ink/90">
+            <span class="text-rose-dark" aria-hidden="true">
+              ✓
+            </span>
+            <span>{item}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- Certificates gallery -->
+<section id="certificates" class="bg-lav/30 py-16 sm:py-20">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <h2 class="text-2xl text-dusk-700 sm:text-3xl">Дипломы и сертификаты</h2>
+    <p class="mt-3 max-w-2xl text-muted">
+      Нажмите на документ, чтобы рассмотреть его крупнее.
+    </p>
+    <div class="mt-8">
+      <Certificates items={certificates} />
+    </div>
+  </div>
+</section>
+
+<!-- Contacts -->
+<section id="contacts" class="bg-dusk-700 py-16 text-cream sm:py-20">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <h2 class="text-2xl text-cream sm:text-3xl">Позвольте себе помочь</h2>
+    <p class="mt-3 text-dusk-100">Контакты для записи</p>
+    <ul class="mt-8 flex flex-wrap gap-3">
+      <li>
+        <a
+          href={`tel:${person.phone}`}
+          class="rounded-full bg-cream px-6 py-3 text-sm font-medium text-dusk-900 transition hover:bg-white"
+        >
+          {person.phoneDisplay}
+        </a>
+      </li>
+      <li>
+        <a
+          href={person.telegram}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-full border border-cream/50 px-6 py-3 text-sm font-medium text-cream transition hover:bg-cream/10"
+        >
+          Telegram
+        </a>
+      </li>
+      <li>
+        <a
+          href={person.whatsapp}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-full border border-cream/50 px-6 py-3 text-sm font-medium text-cream transition hover:bg-cream/10"
+        >
+          WhatsApp
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>

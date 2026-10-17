@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /bitrix/
+Disallow: /auth/
+Disallow: /personal/
+
+Sitemap: https://www.eyepsy.ru/sitemap-index.xml

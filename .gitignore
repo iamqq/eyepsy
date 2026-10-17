@@ -1,0 +1,21 @@
+# Build output
+dist/
+.output/
+
+# Dependencies
+node_modules/
+
+# Astro
+.astro/
+
+# Captured raw source from the original Bitrix site (reference only)
+_capture/
+
+# Environment
+.env
+.env.production
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log

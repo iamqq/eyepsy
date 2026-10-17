@@ -1,0 +1,34 @@
+---
+import site from "../data/site.json";
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-16 border-t border-line bg-lav/40">
+  <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8">
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+      <div class="flex items-center gap-2.5">
+        <img src="/images/logo/eye.png" alt="" width="36" height="26" class="h-6 w-auto" />
+        <span class="font-display font-semibold text-dusk-700">{site.title}</span>
+      </div>
+
+      <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+        {
+          site.contacts.map((c) => (
+            <li>
+              <span class="text-muted">{c.name}:</span>{" "}
+              <a href={`tel:${c.phone}`} class="text-dusk-700 hover:underline">
+                {c.phoneDisplay}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <p class="mt-8 text-xs leading-relaxed text-muted">
+      Консультации психолога в {site.city} и онлайн. Информация на сайте не является
+      медицинской услугой и не заменяет обращение к врачу.
+    </p>
+    <p class="mt-2 text-xs text-muted">© {year} {site.title}. Все права защищены.</p>
+  </div>
+</footer>

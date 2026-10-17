@@ -1,0 +1,44 @@
+---
+import type { Certificate } from "../lib/content";
+
+interface Props {
+  items: Certificate[];
+  emptyNote?: string;
+}
+const { items, emptyNote = "Сертификаты и документы об образовании" } = Astro.props;
+---
+
+{
+  items.length > 0 ? (
+    <ul
+      data-lightbox-group
+      class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+    >
+      {items.map((item) => (
+        <li>
+          <button
+            type="button"
+            data-lightbox
+            data-full={item.src}
+            data-title={item.title ?? ""}
+            class="group block h-full w-full overflow-hidden rounded-lg border border-line bg-white shadow-sm transition hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-dusk-500"
+            aria-label={`Открыть: ${item.title ?? "сертификат"}`}
+          >
+            <span class="block aspect-[3/4] overflow-hidden bg-lav/50">
+              <img
+                src={item.src}
+                alt={item.title ?? "Сертификат"}
+                loading="lazy"
+                width="400"
+                height="533"
+                class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+              />
+            </span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class="text-muted">{emptyNote}</p>
+  )
+}

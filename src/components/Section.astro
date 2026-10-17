@@ -1,0 +1,43 @@
+---
+interface Props {
+  id?: string;
+  title?: string;
+  subtitle?: string;
+  class?: string;
+  tone?: "cream" | "lav" | "dusk";
+}
+
+const { id, title, subtitle, class: className = "", tone = "cream" } = Astro.props;
+
+const toneClass =
+  tone === "lav"
+    ? "bg-lav/40"
+    : tone === "dusk"
+      ? "bg-dusk-700 text-cream"
+      : "";
+---
+
+<section id={id} class={`py-16 sm:py-20 ${toneClass} ${className}`}>
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    {
+      title && (
+        <div class="mb-10 max-w-2xl">
+          <h2
+            class:list={[
+              "text-2xl sm:text-3xl",
+              tone === "dusk" ? "text-cream" : "text-dusk-700",
+            ]}
+          >
+            {title}
+          </h2>
+          {subtitle && (
+            <p class:list={["mt-3", tone === "dusk" ? "text-dusk-100" : "text-muted"]}>
+              {subtitle}
+            </p>
+          )}
+        </div>
+      )
+    }
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,20 @@
+{
+  "name": "eyepsy-static",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static rebuild of eyepsy.ru (психологическая помощь) for Cloudflare Pages",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.8",
+    "tailwindcss": "^4.3.3"
+  }
+}

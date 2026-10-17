@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Profile from "../../components/Profile.astro";
+import { getPerson, certificatesBySlug, site } from "../../lib/content";
+
+const person = getPerson("anastasiya")!;
+const certificates = certificatesBySlug["anastasiya"] ?? [];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: person.name,
+  jobTitle: person.role,
+  image: new URL(person.photo, site.url).href,
+  url: new URL(`/${person.slug}/`, site.url).href,
+  telephone: person.phone,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: site.city,
+    addressCountry: "RU",
+  },
+};
+
+const nav = [
+  { label: "О нас", href: "/#team" },
+  { label: "Образование", href: "#education" },
+  { label: "С чем мы работаем", href: "/#topics" },
+  { label: "Контакты", href: "#contacts" },
+];
+---
+
+<BaseLayout
+  title={person.name}
+  description={`${person.name} — ${person.role}, член Национальной Ассоциации EMDR России. Консультации в Санкт-Петербурге и онлайн.`}
+  image={person.photo}
+  nav={nav}
+  jsonLd={jsonLd}
+>
+  <Profile person={person} certificates={certificates} />
+</BaseLayout>
