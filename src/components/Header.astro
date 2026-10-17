@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import site from "../data/site.json";
+import { imageAsset } from "../lib/images";
 
 interface Props {
   nav?: { label: string; href: string }[];
@@ -12,11 +14,11 @@ const { nav = site.nav } = Astro.props;
 >
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
     <a href="/" class="flex items-center gap-2.5" aria-label="На главную">
-      <img
-        src="/images/logo/eye.png"
+      <Image
+        src={imageAsset("/images/logo/eye.png")}
         alt=""
-        width="36"
-        height="26"
+        width={36}
+        height={26}
         class="h-6 w-auto"
         loading="eager"
       />

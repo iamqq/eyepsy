@@ -1,16 +1,18 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PersonCard from "../components/PersonCard.astro";
 import TopicCard from "../components/TopicCard.astro";
 import ContactList from "../components/ContactList.astro";
 import { site, topics, people } from "../lib/content";
+import { imageAsset } from "../lib/images";
 ---
 
 <BaseLayout>
   <!-- Hero -->
   <section class="relative isolate overflow-hidden bg-dusk-900">
-    <img
-      src={site.hero.image}
+    <Image
+      src={imageAsset(site.hero.image)}
       alt=""
       class="absolute inset-0 -z-10 h-full w-full object-cover"
       loading="eager"

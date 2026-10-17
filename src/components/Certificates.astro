@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import type { Certificate } from "../lib/content";
+import { imageAsset } from "../lib/images";
 
 interface Props {
   items: Certificate[];
@@ -19,18 +21,18 @@ const { items, emptyNote = "Сертификаты и документы об о
           <button
             type="button"
             data-lightbox
-            data-full={item.src}
+            data-full={imageAsset(item.src).src}
             data-title={item.title ?? ""}
             class="group block h-full w-full overflow-hidden rounded-lg border border-line bg-white shadow-sm transition hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-dusk-500"
             aria-label={`Открыть: ${item.title ?? "сертификат"}`}
           >
             <span class="block aspect-[3/4] overflow-hidden bg-lav/50">
-              <img
-                src={item.src}
+              <Image
+                src={imageAsset(item.src)}
                 alt={item.title ?? "Сертификат"}
                 loading="lazy"
-                width="400"
-                height="533"
+                width={400}
+                height={533}
                 class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
               />
             </span>

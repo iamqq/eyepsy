@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import type { Person } from "../lib/content";
+import { imageAsset } from "../lib/images";
 
 interface Props {
   person: Person;
@@ -12,11 +14,11 @@ const { person } = Astro.props;
 >
   <a href={`/${person.slug}/`} class="block focus:outline-none">
     <div class="aspect-[4/5] overflow-hidden bg-lav">
-      <img
-        src={person.photo}
+      <Image
+        src={imageAsset(person.photo)}
         alt={`${person.name} — ${person.role}`}
-        width="540"
-        height="675"
+        width={540}
+        height={675}
         loading="lazy"
         class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
         style={`object-position:${person.cardPhotoPosition ?? "center"}`}

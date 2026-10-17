@@ -39,6 +39,8 @@ flowchart TD
 
 ```
 src/
+├── assets/images/     Source images — hero/, team/, certificates/{ulyana,anastasiya}/,
+│                      ulyana/, logo/ (optimised at build time by Astro's <Image>)
 ├── components/        Header, Footer, PersonCard, TopicCard, ContactList,
 │                      Certificates (gallery + lightbox), Profile, Section
 ├── data/              All editable content (JSON) — see below
@@ -47,12 +49,12 @@ src/
 │   ├── people/        ulyana.json, anastasiya.json
 │   └── certificates/  ulyana.json, anastasiya.json
 ├── layouts/           BaseLayout.astro (head/SEO, header, footer, lightbox)
-├── lib/content.ts     Typed access layer over the JSON files
+├── lib/               content.ts (typed JSON access) · images.ts (asset lookup)
 ├── pages/             index, ulyana/, anastasiya/
 └── styles/global.css  Design tokens (colors, fonts) + base styles
 public/
-├── images/            hero/, team/, certificates/{ulyana,anastasiya}/, logo/
-├── favicon.ico, favicon.svg
+├── favicon.ico, favicon-16x16.png, favicon-32x32.png, favicon-96x96.png,
+│   apple-touch-icon.png
 ├── robots.txt
 └── _redirects         Legacy Bitrix URL redirects for Cloudflare Pages
 ```
@@ -63,20 +65,29 @@ All copy and lists live in JSON, so day-to-day edits never touch components.
 
 ### Add a certificate
 
-Append one object to the relevant file and drop the image into the folder:
+Use the helper script — it converts the image to WebP (max 1920px), stores it, and
+appends the data entry for you:
 
-1. Copy the image into `public/images/certificates/ulyana/` (or `anastasiya/`).
-2. Add an entry to `src/data/certificates/ulyana.json`:
+```bash
+npm run cert -- ulyana ~/Downloads/scan.jpg "Схема-терапия"
+```
+
+It writes the WebP to `src/assets/images/certificates/ulyana/` (or `anastasiya/`)
+and appends to `src/data/certificates/<person>.json`. The gallery then renders
+automatically, in file order, and the lightbox shows the full-size image.
+
+Manual alternative: drop a WebP into `src/assets/images/certificates/<person>/`
+and add an entry to `src/data/certificates/<person>.json`:
 
 ```json
 { "src": "/images/certificates/ulyana/my-new-cert.webp", "title": "Название документа" }
 ```
 
-That's it — the gallery renders automatically, sorted in file order, and the
-lightbox picks it up. `title` is optional and is shown as a caption.
+`title` is optional and is shown as a caption.
 
-> Tip: convert new images to WebP for fast loading, e.g.
-> `sharp input.jpg` → `output.webp` at ~82% quality.
+> Images live under `src/assets/images/` but are referenced by `/images/…` paths —
+> [`src/lib/images.ts`](src/lib/images.ts) maps the two, and Astro's `<Image>`
+> component optimises them (resize + WebP + responsive output) at build time.
 
 ### Edit text, contacts or prices
 
@@ -98,19 +109,46 @@ npm run preview  # preview the built site
 
 ## Deploy to Cloudflare Pages
 
+The project builds to a fully static `dist/` and needs no server runtime.
+
+### Option A — Git integration (recommended)
+
 1. Push this repository to GitHub (or GitLab).
 2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**.
 3. Use these build settings:
 
-   | Setting              | Value           |
-   | -------------------- | --------------- |
-   | Framework preset     | Astro           |
-   | Build command        | `npm run build` |
-   | Build output directory | `dist`        |
-   | Node version         | `22` (see `.nvmrc`) |
+   | Setting                | Value               |
+   | ---------------------- | ------------------- |
+   | Framework preset       | Astro               |
+   | Build command          | `npm run build`     |
+   | Build output directory | `dist`              |
+   | Node version           | `22` (see `.nvmrc`) |
+
+   If the preset does not read `.nvmrc`, add an environment variable
+   **`NODE_VERSION = 22`** (Settings → Environment variables).
 
 4. Deploy. Cloudflare builds and serves `dist/` on its global CDN over HTTPS.
-5. Add the custom domain (`www.eyepsy.ru`) under **Custom domains** and point DNS.
+5. Add the custom domain (`www.eyepsy.ru`) under **Custom domains** and point DNS
+   (the apex/`www` currently serve the old Bitrix site — switch them over).
+
+### Option B — Direct upload with Wrangler
+
+```bash
+npm install
+npm run build
+npx wrangler pages deploy dist --project-name eyepsy
+```
+
+The first run logs you in and creates the Pages project.
+
+### Deployment notes
+
+- `public/_redirects` is copied into `dist/` and Cloudflare applies it
+  automatically — keep it (it redirects legacy Bitrix paths).
+- `trailingSlash: 'always'` + `build.format: 'directory'` produce `/ulyana/` and
+  `/anastasiya/`, matching the original URLs.
+- Image optimisation runs at build time via `sharp`, which is available in
+  Cloudflare's build image — no extra setup needed.
 
 ### Legacy URLs
 

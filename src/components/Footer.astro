@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import site from "../data/site.json";
+import { imageAsset } from "../lib/images";
 const year = new Date().getFullYear();
 ---
 
@@ -7,7 +9,13 @@ const year = new Date().getFullYear();
   <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8">
     <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
       <div class="flex items-center gap-2.5">
-        <img src="/images/logo/eye.png" alt="" width="36" height="26" class="h-6 w-auto" />
+        <Image
+          src={imageAsset("/images/logo/eye.png")}
+          alt=""
+          width={36}
+          height={26}
+          class="h-6 w-auto"
+        />
         <span class="font-display font-semibold text-dusk-700">{site.title}</span>
       </div>
 

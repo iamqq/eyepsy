@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import type { Person, Certificate } from "../lib/content";
+import { imageAsset } from "../lib/images";
 import Certificates from "./Certificates.astro";
 
 interface Props {
@@ -11,10 +13,11 @@ const { person, certificates } = Astro.props;
 
 <!-- Hero -->
 <section class="relative isolate overflow-hidden bg-dusk-900">
-  <img
-    src="/images/hero/profile.webp"
+  <Image
+    src={imageAsset("/images/hero/profile.webp")}
     alt=""
     class="absolute inset-0 -z-10 h-full w-full object-cover"
+    loading="eager"
   />
   <div
     class="absolute inset-0 -z-10 bg-gradient-to-r from-dusk-900/90 via-dusk-900/75 to-dusk-900/40"
@@ -58,11 +61,12 @@ const { person, certificates } = Astro.props;
     </div>
 
     <div class="justify-self-center lg:justify-self-end">
-      <img
-        src={person.photo}
+      <Image
+        src={imageAsset(person.photo)}
         alt={person.name}
-        width="540"
-        height="675"
+        width={540}
+        height={675}
+        loading="eager"
         class="aspect-[4/5] w-full max-w-[18rem] rounded-2xl object-cover shadow-2xl ring-1 ring-cream/20"
         style={`object-position:${person.cardPhotoPosition ?? "center"}`}
       />
@@ -171,6 +175,43 @@ const { person, certificates } = Astro.props;
     </div>
   </div>
 </section>
+
+<!-- Telegram channel -->
+{
+  person.telegramChannel && (
+    <section id="telegram" class="py-16 sm:py-20">
+      <div class="mx-auto grid max-w-6xl items-center gap-8 px-5 sm:px-8 lg:grid-cols-[1.1fr_1fr]">
+        <div class="order-2 lg:order-1">
+          <h2 class="text-2xl text-dusk-700 sm:text-3xl">{person.telegramChannel.title}</h2>
+          {person.telegramChannel.text && (
+            <p class="mt-4 max-w-xl leading-relaxed text-ink/90">{person.telegramChannel.text}</p>
+          )}
+          <a
+            href={person.telegramChannel.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-6 inline-block rounded-full bg-rose px-6 py-3 text-sm font-medium text-dusk-900 transition hover:bg-rose-light"
+          >
+            {person.telegramChannel.buttonLabel}
+          </a>
+        </div>
+        <a
+          href={person.telegramChannel.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="order-1 block justify-self-center lg:order-2 lg:justify-self-end"
+        >
+          <Image
+            src={imageAsset(person.telegramChannel.image)}
+            alt={person.telegramChannel.imageAlt ?? person.telegramChannel.title}
+            loading="lazy"
+            class="w-full max-w-xs rounded-2xl border border-line shadow-lg"
+          />
+        </a>
+      </div>
+    </section>
+  )
+}
 
 <!-- Contacts -->
 <section id="contacts" class="bg-dusk-700 py-16 text-cream sm:py-20">

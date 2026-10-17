@@ -75,6 +75,14 @@ export interface Person {
     additionalTitle: string;
     additional: string[];
   };
+  telegramChannel?: {
+    title: string;
+    text?: string;
+    buttonLabel: string;
+    url: string;
+    image: string;
+    imageAlt?: string;
+  };
 }
 
 export interface Certificate {

@@ -2,16 +2,18 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Profile from "../../components/Profile.astro";
 import { getPerson, certificatesBySlug, site } from "../../lib/content";
+import { imageAsset } from "../../lib/images";
 
 const person = getPerson("ulyana")!;
 const certificates = certificatesBySlug["ulyana"] ?? [];
+const photo = imageAsset(person.photo);
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: person.name,
   jobTitle: person.role,
-  image: new URL(person.photo, site.url).href,
+  image: new URL(photo.src, site.url).href,
   url: new URL(`/${person.slug}/`, site.url).href,
   telephone: person.phone,
   address: {
@@ -32,7 +34,7 @@ const nav = [
 <BaseLayout
   title={person.name}
   description={`${person.name} — ${person.role}. Психологическое консультирование в Санкт-Петербурге и онлайн, клиническая психодиагностика.`}
-  image={person.photo}
+  image={photo.src}
   nav={nav}
   jsonLd={jsonLd}
 >

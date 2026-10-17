@@ -3,6 +3,7 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import site from "../data/site.json";
+import { imageAsset } from "../lib/images";
 
 interface Props {
   title?: string;
@@ -15,7 +16,7 @@ interface Props {
 const {
   title,
   description = site.description,
-  image = site.hero.image,
+  image = imageAsset(site.hero.image).src,
   nav,
   jsonLd,
 } = Astro.props;
@@ -48,8 +49,12 @@ const jsonLdData = jsonLd
     <meta name="author" content={site.title} />
     <link rel="canonical" href={canonical} />
 
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- Favicons: the original eyepsy.ru icon set -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
     <!-- Open Graph / social -->
     <meta property="og:type" content="website" />
