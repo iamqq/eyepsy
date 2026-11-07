@@ -2,15 +2,13 @@
  * Central content access layer.
  *
  * All copy lives in the JSON files under `src/data/` so it can be edited
- * without touching components. Add a certificate by appending one object to the
- * matching file in `src/data/certificates/` — no code changes required.
+ * without touching components. Add a certificate by appending one object to
+ * `src/data/certificates/ulyana.json` — no code changes required.
  */
 import siteJson from "../data/site.json";
 import topicsJson from "../data/topics.json";
 import ulyanaJson from "../data/people/ulyana.json";
-import anastasiyaJson from "../data/people/anastasiya.json";
 import ulyanaCerts from "../data/certificates/ulyana.json";
-import anastasiyaCerts from "../data/certificates/anastasiya.json";
 
 export interface NavItem {
   label: string;
@@ -52,6 +50,11 @@ export interface PersonSection {
   facts?: string[];
 }
 
+export interface PersonFaqItem {
+  question: string;
+  answer: string;
+}
+
 export interface Person {
   slug: string;
   name: string;
@@ -68,6 +71,7 @@ export interface Person {
   approach: string | null;
   facts: string[];
   sections: PersonSection[];
+  faq?: PersonFaqItem[];
   education: {
     base: string;
     experienceTitle: string;
@@ -92,13 +96,9 @@ export interface Certificate {
 
 export const site = siteJson as SiteData;
 export const topics = topicsJson as TopicsData;
-export const people = [ulyanaJson, anastasiyaJson] as unknown as Person[];
-
-export const certificatesBySlug: Record<string, Certificate[]> = {
-  ulyana: ulyanaCerts as Certificate[],
-  anastasiya: anastasiyaCerts as Certificate[],
-};
+export const person = ulyanaJson as unknown as Person;
+export const certificates = ulyanaCerts as Certificate[];
 
 export function getPerson(slug: string): Person | undefined {
-  return people.find((p) => p.slug === slug);
+  return slug === person.slug ? person : undefined;
 }

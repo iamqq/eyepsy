@@ -6,10 +6,9 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   // Canonical production origin (used for sitemap, canonical URLs, OG tags).
-  site: 'https://www.eyepsy.ru',
+  site: 'https://ulianapsy.com',
   integrations: [sitemap()],
-  // The original Bitrix site serves /ulyana/ and /anastasiya/ with a trailing
-  // slash; keep that shape so old links and the sitemap stay valid.
+  // Keep the original trailing-slash URL shape so old links stay valid.
   trailingSlash: 'always',
   build: {
     format: 'directory',

@@ -3,11 +3,10 @@
  * Add a certificate image + data entry without editing any files by hand.
  *
  * Usage:
- *   npm run cert -- <ulyana|anastasiya> <path-to-image> ["optional title"]
+ *   npm run cert -- ulyana <path-to-image> ["optional title"]
  *
- * Examples:
+ * Example:
  *   npm run cert -- ulyana ~/Downloads/scan.jpg "Схема-терапия"
- *   npm run cert -- anastasiya ./emdr-2.png
  *
  * What it does:
  *   1. Converts the image to WebP (max 1920px) into
@@ -24,11 +23,11 @@ import sharp from "sharp";
 
 const [person, imagePath, ...titleParts] = process.argv.slice(2);
 const title = titleParts.join(" ").trim();
-const PEOPLE = ["ulyana", "anastasiya"];
+const PEOPLE = ["ulyana"];
 
 if (!person || !PEOPLE.includes(person) || !imagePath) {
   console.error(
-    'Usage: npm run cert -- <ulyana|anastasiya> <path-to-image> ["optional title"]'
+    'Usage: npm run cert -- ulyana <path-to-image> ["optional title"]'
   );
   process.exit(1);
 }

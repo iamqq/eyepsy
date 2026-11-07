@@ -4,4 +4,4 @@ Disallow: /bitrix/
 Disallow: /auth/
 Disallow: /personal/
 
-Sitemap: https://www.eyepsy.ru/sitemap-index.xml
+Sitemap: https://ulianapsy.com/sitemap-index.xml

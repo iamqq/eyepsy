@@ -13,5 +13,8 @@
 /pub/site/*          /            301
 /preview/*           /            301
 
-# Profile pages keep their original paths (no redirect needed),
-# handled by /ulyana/ and /anastasiya/.
+# Old profile pages -> the single personal page
+/ulyana              /            301
+/ulyana/*            /            301
+/anastasiya          /            301
+/anastasiya/*        /            301

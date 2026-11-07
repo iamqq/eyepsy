@@ -1,7 +1,7 @@
-# eyepsy — психологическая помощь (static rebuild)
+# ulianapsy — Ульяна Рязанова, клинический психолог (static rebuild)
 
-A fully static rebuild of **https://www.eyepsy.ru/** — a psychology practice site
-(Санкт-Петербург + онлайн) with two clinical psychologists —
+A fully static rebuild of **https://ulianapsy.com/** — the personal page of
+clinical psychologist **Ульяна Рязанова** (Санкт-Петербург + онлайн) —
 designed for free hosting on **Cloudflare Pages**.
 
 The original site was a Bitrix24.Sites landing page. This project replaces it with
@@ -29,28 +29,26 @@ flowchart TD
     D --> E["Custom domain + HTTPS"]
 ```
 
-| URL            | Source                        | Content                                                        |
-| -------------- | ----------------------------- | -------------------------------------------------------------- |
-| `/`            | `src/pages/index.astro`       | Hero, two psychologist cards, «С чем мы работаем», contacts     |
-| `/ulyana/`     | `src/pages/ulyana/index.astro`| Ульяна Рязанова — intro, pricing, diagnostics, education, certs |
-| `/anastasiya/` | `src/pages/anastasiya/index.astro` | Анастасия Копылова — intro, pricing, education, certs      |
+| URL | Source                  | Content                                                                 |
+| --- | ----------------------- | ----------------------------------------------------------------------- |
+| `/` | `src/pages/index.astro` | Hero, «С чем работаю», pricing, diagnostics, education, certs, contacts |
 
 ## Project layout
 
 ```
 src/
-├── assets/images/     Source images — hero/, team/, certificates/{ulyana,anastasiya}/,
+├── assets/images/     Source images — hero/, team/, certificates/ulyana/,
 │                      ulyana/, logo/ (optimised at build time by Astro's <Image>)
-├── components/        Header, Footer, PersonCard, TopicCard, ContactList,
-│                      Certificates (gallery + lightbox), Profile, Section
+├── components/        Header, Footer, TopicCard, Certificates (gallery + lightbox),
+│                      Profile, Section
 ├── data/              All editable content (JSON) — see below
-│   ├── site.json      Site title, contacts, nav, hero
-│   ├── topics.json    «С чем мы работаем» cards
-│   ├── people/        ulyana.json, anastasiya.json
-│   └── certificates/  ulyana.json, anastasiya.json
+│   ├── site.json      Site title, contact, nav, hero
+│   ├── topics.json    «С чем работаю» cards
+│   ├── people/        ulyana.json
+│   └── certificates/  ulyana.json
 ├── layouts/           BaseLayout.astro (head/SEO, header, footer, lightbox)
 ├── lib/               content.ts (typed JSON access) · images.ts (asset lookup)
-├── pages/             index, ulyana/, anastasiya/
+├── pages/             index
 └── styles/global.css  Design tokens (colors, fonts) + base styles
 public/
 ├── favicon.ico, favicon-16x16.png, favicon-32x32.png, favicon-96x96.png,
@@ -72,8 +70,8 @@ appends the data entry for you:
 npm run cert -- ulyana ~/Downloads/scan.jpg "Схема-терапия"
 ```
 
-It writes the WebP to `src/assets/images/certificates/ulyana/` (or `anastasiya/`)
-and appends to `src/data/certificates/<person>.json`. The gallery then renders
+It writes the WebP to `src/assets/images/certificates/ulyana/` and appends to
+`src/data/certificates/ulyana.json`. The gallery then renders
 automatically, in file order, and the lightbox shows the full-size image.
 
 Manual alternative: drop a WebP into `src/assets/images/certificates/<person>/`
@@ -91,10 +89,10 @@ and add an entry to `src/data/certificates/<person>.json`:
 
 ### Edit text, contacts or prices
 
-- Phone numbers, Telegram/WhatsApp links: `src/data/site.json`
-  (and per-person in `src/data/people/*.json`).
+- Phone number, Telegram/WhatsApp links: `src/data/site.json`
+  (and in `src/data/people/ulyana.json`).
 - Topics list: `src/data/topics.json`.
-- Bio, pricing, education lists: `src/data/people/<slug>.json`.
+- Bio, pricing, education, FAQ: `src/data/people/ulyana.json`.
 
 ## Local development
 
@@ -128,7 +126,7 @@ The project builds to a fully static `dist/` and needs no server runtime.
    **`NODE_VERSION = 22`** (Settings → Environment variables).
 
 4. Deploy. Cloudflare builds and serves `dist/` on its global CDN over HTTPS.
-5. Add the custom domain (`www.eyepsy.ru`) under **Custom domains** and point DNS
+5. Add the custom domain (`ulianapsy.com`) under **Custom domains** and point DNS
    (the apex/`www` currently serve the old Bitrix site — switch them over).
 
 ### Option B — Direct upload with Wrangler
@@ -136,7 +134,7 @@ The project builds to a fully static `dist/` and needs no server runtime.
 ```bash
 npm install
 npm run build
-npx wrangler pages deploy dist --project-name eyepsy
+npx wrangler pages deploy dist --project-name ulianapsy
 ```
 
 The first run logs you in and creates the Pages project.
@@ -145,8 +143,8 @@ The first run logs you in and creates the Pages project.
 
 - `public/_redirects` is copied into `dist/` and Cloudflare applies it
   automatically — keep it (it redirects legacy Bitrix paths).
-- `trailingSlash: 'always'` + `build.format: 'directory'` produce `/ulyana/` and
-  `/anastasiya/`, matching the original URLs.
+- `trailingSlash: 'always'` + `build.format: 'directory'` keep the original
+  trailing-slash URL shape.
 - Image optimisation runs at build time via `sharp`, which is available in
   Cloudflare's build image — no extra setup needed.
 
@@ -154,13 +152,13 @@ The first run logs you in and creates the Pages project.
 
 Old Bitrix paths (`/bitrix/*`, `/index.php`, `/upload/*`, `/pub/site/*`, …) are
 redirected to `/` via [`public/_redirects`](public/_redirects), so bookmarks and
-search-engine results keep working. `/ulyana/` and `/anastasiya/` keep their
-original paths.
+search-engine results keep working. The former profile URLs `/ulyana/` and
+`/anastasiya/` also redirect to `/` with a `301`.
 
 ## Notes
 
 - Fonts (Montserrat, Open Sans) load from Google Fonts — no Bitrix font CDN.
-- SEO: canonical URLs, Open Graph/Twitter tags, JSON-LD (`WebSite` + `Person`),
-  `robots.txt`, and an auto-generated `sitemap-index.xml`.
+- SEO: canonical URLs, Open Graph/Twitter tags, JSON-LD (`WebSite`, `Person`,
+  `FAQPage`), `robots.txt`, and an auto-generated `sitemap-index.xml`.
 - The original `_capture/` folder contains the raw mirror used for migration and
   is git-ignored.
