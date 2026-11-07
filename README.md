@@ -105,14 +105,14 @@ npm run build    # static build into dist/
 npm run preview  # preview the built site
 ```
 
-## Deploy to Cloudflare Pages
+## Deploy to Cloudflare Workers & Pages
 
 The project builds to a fully static `dist/` and needs no server runtime.
 
 ### Option A — Git integration (recommended)
 
 1. Push this repository to GitHub (or GitLab).
-2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**.
+2. In the Cloudflare dashboard: **Workers & Pages → Create → Connect to Git**.
 3. Use these build settings:
 
    | Setting                | Value               |
@@ -134,13 +134,19 @@ The project builds to a fully static `dist/` and needs no server runtime.
 ```bash
 npm install
 npm run build
-npx wrangler pages deploy dist --project-name ulianapsy
+npx wrangler deploy
 ```
 
-The first run logs you in and creates the Pages project.
+[`wrangler.toml`](wrangler.toml) configures the Worker to serve `dist/` as static
+assets. The first run logs you in and creates the Worker project.
 
 ### Deployment notes
 
+- The project deploys as a Cloudflare Worker with static assets.
+  [`wrangler.toml`](wrangler.toml) points Wrangler at `dist/` and prevents the
+  Astro adapter auto-config from running during CI.
+- Astro requires Node `>=22.23.4`; [`.node-version`](.node-version) and the
+  `engines` field in [`package.json`](package.json) pin it for Cloudflare builds.
 - `public/_redirects` is copied into `dist/` and Cloudflare applies it
   automatically — keep it (it redirects legacy Bitrix paths).
 - `trailingSlash: 'always'` + `build.format: 'directory'` keep the original

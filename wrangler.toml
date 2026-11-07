@@ -1,0 +1,11 @@
+# Cloudflare Workers static-assets configuration.
+#
+# The site is fully static (Astro `output: "static"`), so there is no need for
+# the @astrojs/cloudflare SSR adapter. This config tells `wrangler deploy` to
+# upload the contents of `dist/` as static assets and prevents Wrangler's
+# Astro auto-config from running `astro add cloudflare` during CI.
+name = "eyepsy"
+compatibility_date = "2025-11-07"
+
+[assets]
+directory = "./dist"

@@ -8,6 +8,9 @@ node_modules/
 # Astro
 .astro/
 
+# Wrangler
+.wrangler/
+
 # Captured raw source from the original Bitrix site (reference only)
 _capture/
 
