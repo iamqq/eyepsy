@@ -14,7 +14,7 @@ styles, or dependencies**.
 | ---------- | ------------------------------------------------- |
 | Framework  | [Astro](https://astro.build) (static output)      |
 | Styling    | Tailwind CSS v4 (`@tailwindcss/vite`)             |
-| Content    | JSON data files + Astro components                |
+| Content    | JSON (`src/data/content.json`) + Astro components |
 | Images     | WebP (generated with `sharp`)                     |
 | Sitemap    | `@astrojs/sitemap`                                |
 | Hosting    | Cloudflare Pages (static, free tier)              |
@@ -23,7 +23,7 @@ styles, or dependencies**.
 
 ```mermaid
 flowchart TD
-    A["src/data/*.json"] --> B[Astro components]
+    A["src/data/content.json"] --> B[Astro components]
     B --> C["Static build (dist/)"]
     C --> D[Cloudflare Pages]
     D --> E["Custom domain + HTTPS"]
@@ -40,12 +40,9 @@ src/
 ├── assets/images/     Source images — hero/, team/, certificates/ulyana/,
 │                      ulyana/, logo/ (optimised at build time by Astro's <Image>)
 ├── components/        Header, Footer, TopicCard, Certificates (gallery + lightbox),
-│                      Profile, Section
-├── data/              All editable content (JSON) — see below
-│   ├── site.json      Site title, contact, nav, hero
-│   ├── topics.json    «С чем работаю» cards
-│   ├── people/        ulyana.json
-│   └── certificates/  ulyana.json
+│                      Profile
+├── data/              All editable content
+│   └── content.json   Site copy, UI labels, person, topics, certificates
 ├── layouts/           BaseLayout.astro (head/SEO, header, footer, lightbox)
 ├── lib/               content.ts (typed JSON access) · images.ts (asset lookup)
 ├── pages/             index
@@ -59,7 +56,16 @@ public/
 
 ## Editing content (no code required)
 
-All copy and lists live in JSON, so day-to-day edits never touch components.
+All copy and lists live in one file, `src/data/content.json`, so day-to-day edits
+never touch components. The file has five top-level sections:
+
+| Section        | Contains                                                                 |
+| -------------- | ------------------------------------------------------------------------ |
+| `site`         | Page title, SEO metadata, brand, logo, nav, hero image, CTA, footer text |
+| `ui`           | Accessibility labels and shared UI strings                               |
+| `person`       | Bio, contacts, pricing, education, appointment steps, FAQ                |
+| `topics`       | «С чем работаю» cards                                                     |
+| `certificates` | Gallery labels and the `items` list                                      |
 
 ### Add a certificate
 
@@ -71,17 +77,18 @@ npm run cert -- ulyana ~/Downloads/scan.jpg "Схема-терапия"
 ```
 
 It writes the WebP to `src/assets/images/certificates/ulyana/` and appends to
-`src/data/certificates/ulyana.json`. The gallery then renders
+`certificates.items` in `src/data/content.json`. The gallery then renders
 automatically, in file order, and the lightbox shows the full-size image.
 
-Manual alternative: drop a WebP into `src/assets/images/certificates/<person>/`
-and add an entry to `src/data/certificates/<person>.json`:
+Manual alternative: drop a WebP into `src/assets/images/certificates/ulyana/`
+and add an entry to `certificates.items` in `src/data/content.json`:
 
 ```json
 { "src": "/images/certificates/ulyana/my-new-cert.webp", "title": "Название документа" }
 ```
 
-`title` is optional and is shown as a caption.
+`title` is optional and is shown as a caption; if omitted, the gallery uses
+`certificates.fallbackTitle`.
 
 > Images live under `src/assets/images/` but are referenced by `/images/…` paths —
 > [`src/lib/images.ts`](src/lib/images.ts) maps the two, and Astro's `<Image>`
@@ -89,10 +96,11 @@ and add an entry to `src/data/certificates/<person>.json`:
 
 ### Edit text, contacts or prices
 
-- Phone number, Telegram/WhatsApp links: `src/data/site.json`
-  (and in `src/data/people/ulyana.json`).
-- Topics list: `src/data/topics.json`.
-- Bio, pricing, education, FAQ: `src/data/people/ulyana.json`.
+- Phone number, Telegram/WhatsApp links: `site`/`person` in `src/data/content.json`.
+- Site title, description, keywords, logo, nav, CTA and footer: `site`.
+- Shared labels and accessibility text: `ui`.
+- Topics list: `topics`.
+- Bio, pricing, education, appointment steps, FAQ: `person`.
 
 ## Local development
 

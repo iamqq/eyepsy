@@ -2,7 +2,7 @@
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import site from "../data/site.json";
+import { site, ui } from "../lib/content";
 import { imageAsset } from "../lib/images";
 
 interface Props {
@@ -46,7 +46,7 @@ const jsonLdData = jsonLd
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={site.keywords} />
-    <meta name="author" content={site.title} />
+    <meta name="author" content={site.brandName} />
     <link rel="canonical" href={canonical} />
 
     <!-- Favicons: the original icon set -->
@@ -59,7 +59,7 @@ const jsonLdData = jsonLd
     <!-- Open Graph / social -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.title} />
-    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:locale" content={site.ogLocale} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -102,7 +102,7 @@ const jsonLdData = jsonLd
           type="button"
           data-lb-close
           class="absolute right-3 top-3 rounded-full bg-dusk-900/70 px-3 py-1 text-lg leading-none text-cream transition hover:bg-dusk-700"
-          aria-label="Закрыть"
+          aria-label={ui.closeLabel}
         >
           &times;
         </button>
@@ -110,7 +110,7 @@ const jsonLdData = jsonLd
           type="button"
           data-lb-prev
           class="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-dusk-900/70 px-3 py-2 text-xl leading-none text-cream transition hover:bg-dusk-700"
-          aria-label="Предыдущее изображение"
+          aria-label={ui.prevImageLabel}
         >
           &#8249;
         </button>
@@ -118,7 +118,7 @@ const jsonLdData = jsonLd
           type="button"
           data-lb-next
           class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-dusk-900/70 px-3 py-2 text-xl leading-none text-cream transition hover:bg-dusk-700"
-          aria-label="Следующее изображение"
+          aria-label={ui.nextImageLabel}
         >
           &#8250;
         </button>

@@ -1,27 +1,15 @@
 /**
  * Central content access layer.
  *
- * All copy lives in the JSON files under `src/data/` so it can be edited
- * without touching components. Add a certificate by appending one object to
- * `src/data/certificates/ulyana.json` — no code changes required.
+ * All site copy lives in `src/data/content.json` so it can be edited without
+ * touching components. Add a certificate by appending one object to
+ * `content.certificates.items` — no code changes required.
  */
-import siteJson from "../data/site.json";
-import topicsJson from "../data/topics.json";
-import ulyanaJson from "../data/people/ulyana.json";
-import ulyanaCerts from "../data/certificates/ulyana.json";
+import contentJson from "../data/content.json";
 
 export interface NavItem {
   label: string;
   href: string;
-}
-
-export interface Contact {
-  name: string;
-  fullName: string;
-  phone: string;
-  phoneDisplay: string;
-  telegram: string;
-  whatsapp: string;
 }
 
 export interface SiteData {
@@ -29,12 +17,29 @@ export interface SiteData {
   description: string;
   keywords: string;
   lang: string;
+  ogLocale: string;
+  country: string;
   url: string;
   city: string;
-  hero: { title: string; quote: string; quoteAuthor: string; image: string };
+  brandName: string;
+  logo: string;
+  hero: { image: string };
   nav: NavItem[];
   cta: { title: string; subtitle: string };
-  contacts: Contact[];
+  footer: { note: string; copyright: string };
+}
+
+export interface UiLabels {
+  homeLinkLabel: string;
+  mainNavLabel: string;
+  mobileNavLabel: string;
+  menuLabel: string;
+  closeLabel: string;
+  prevImageLabel: string;
+  nextImageLabel: string;
+  faqTitle: string;
+  telegramLabel: string;
+  whatsappLabel: string;
 }
 
 export interface TopicsData {
@@ -55,14 +60,19 @@ export interface PersonFaqItem {
   answer: string;
 }
 
+export interface AppointmentStep {
+  title: string;
+  text: string;
+}
+
 export interface Person {
-  slug: string;
   name: string;
+  shortName: string;
   role: string;
-  cardRole: string;
   badge: string | null;
   photo: string;
   cardPhotoPosition?: string;
+  seoDescription: string;
   phone: string;
   phoneDisplay: string;
   telegram: string;
@@ -73,11 +83,16 @@ export interface Person {
   sections: PersonSection[];
   faq?: PersonFaqItem[];
   education: {
+    title: string;
     base: string;
     experienceTitle: string;
     experience: string[];
     additionalTitle: string;
     additional: string[];
+  };
+  appointment: {
+    title: string;
+    steps: AppointmentStep[];
   };
   telegramChannel?: {
     title: string;
@@ -94,11 +109,36 @@ export interface Certificate {
   title?: string;
 }
 
-export const site = siteJson as SiteData;
-export const topics = topicsJson as TopicsData;
-export const person = ulyanaJson as unknown as Person;
-export const certificates = ulyanaCerts as Certificate[];
+export interface CertificatesData {
+  title: string;
+  hint: string;
+  emptyNote: string;
+  fallbackTitle: string;
+  openLabel: string;
+  items: Certificate[];
+}
 
-export function getPerson(slug: string): Person | undefined {
-  return slug === person.slug ? person : undefined;
+export interface ContentData {
+  site: SiteData;
+  ui: UiLabels;
+  person: Person;
+  topics: TopicsData;
+  certificates: CertificatesData;
+}
+
+export const content = contentJson as unknown as ContentData;
+export const site = content.site;
+export const ui = content.ui;
+export const person = content.person;
+export const topics = content.topics;
+export const certificates = content.certificates;
+
+/**
+ * Replace `{placeholder}` tokens in a config string with the supplied values.
+ */
+export function format(template: string, values: Record<string, string | number>): string {
+  return template.replace(/\{(\w+)\}/g, (match, key: string) => {
+    const value = values[key];
+    return value === undefined ? match : String(value);
+  });
 }

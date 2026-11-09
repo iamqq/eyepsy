@@ -1,8 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import site from "../data/site.json";
+import { format, person, site } from "../lib/content";
 import { imageAsset } from "../lib/images";
 const year = new Date().getFullYear();
+const footerNote = format(site.footer.note, { city: site.city });
+const copyright = format(site.footer.copyright, { year, title: site.title });
 ---
 
 <footer class="mt-16 border-t border-line bg-lav/40">
@@ -10,33 +12,26 @@ const year = new Date().getFullYear();
     <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
       <div class="flex items-center gap-2.5">
         <Image
-          src={imageAsset("/images/logo/eye.png")}
+          src={imageAsset(site.logo)}
           alt=""
           width={36}
           height={26}
           class="h-6 w-auto"
         />
-        <span class="font-display font-semibold text-dusk-700">Ульяна Рязанова</span>
+        <span class="font-display font-semibold text-dusk-700">{site.brandName}</span>
       </div>
 
       <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-        {
-          site.contacts.map((c) => (
-            <li>
-              <span class="text-muted">{c.name}:</span>{" "}
-              <a href={`tel:${c.phone}`} class="text-dusk-700 hover:underline">
-                {c.phoneDisplay}
-              </a>
-            </li>
-          ))
-        }
+        <li>
+          <span class="text-muted">{person.shortName}:</span>{" "}
+          <a href={`tel:${person.phone}`} class="text-dusk-700 hover:underline">
+            {person.phoneDisplay}
+          </a>
+        </li>
       </ul>
     </div>
 
-    <p class="mt-8 text-xs leading-relaxed text-muted">
-      Консультации клинического психолога в {site.city} и онлайн. Информация на сайте не
-      является медицинской услугой и не заменяет обращение к врачу.
-    </p>
-    <p class="mt-2 text-xs text-muted">© {year} {site.title}. Все права защищены.</p>
+    <p class="mt-8 text-xs leading-relaxed text-muted">{footerNote}</p>
+    <p class="mt-2 text-xs text-muted">{copyright}</p>
   </div>
 </footer>

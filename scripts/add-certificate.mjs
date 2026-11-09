@@ -12,7 +12,7 @@
  *   1. Converts the image to WebP (max 1920px) into
  *      src/assets/images/certificates/<person>/ so Astro's <Image /> component
  *      can optimise it at build time
- *   2. Appends an entry to src/data/certificates/<person>.json
+ *   2. Appends an entry to src/data/content.json (certificates.items)
  *
  * Run `npm run build` afterwards to publish.
  */
@@ -37,7 +37,7 @@ if (!fs.existsSync(imagePath)) {
   process.exit(1);
 }
 
-const dataFile = path.join("src", "data", "certificates", `${person}.json`);
+const dataFile = path.join("src", "data", "content.json");
 const outDir = path.join("src", "assets", "images", "certificates", person);
 
 if (!fs.existsSync(dataFile)) {
@@ -68,10 +68,13 @@ await sharp(imagePath, { failOn: "none" })
   .webp({ quality: 82, effort: 5 })
   .toFile(path.join(outDir, fileName));
 
-const items = JSON.parse(fs.readFileSync(dataFile, "utf8"));
+const content = JSON.parse(fs.readFileSync(dataFile, "utf8"));
 const src = `/images/certificates/${person}/${fileName}`;
-items.push({ src, title: title || "Сертификат" });
-fs.writeFileSync(dataFile, JSON.stringify(items, null, 2) + "\n");
+content.certificates.items.push({
+  src,
+  title: title || content.certificates.fallbackTitle,
+});
+fs.writeFileSync(dataFile, JSON.stringify(content, null, 2) + "\n");
 
 console.log(`✓ Image saved   : ${path.join(outDir, fileName)}`);
 console.log(`✓ Entry appended: ${src}`);

@@ -1,13 +1,14 @@
 ---
 import { Image } from "astro:assets";
-import type { Certificate } from "../lib/content";
+import { format } from "../lib/content";
+import type { Certificate, CertificatesData } from "../lib/content";
 import { imageAsset } from "../lib/images";
 
 interface Props {
   items: Certificate[];
-  emptyNote?: string;
+  labels: Pick<CertificatesData, "emptyNote" | "fallbackTitle" | "openLabel">;
 }
-const { items, emptyNote = "Сертификаты и документы об образовании" } = Astro.props;
+const { items, labels } = Astro.props;
 ---
 
 {
@@ -24,12 +25,14 @@ const { items, emptyNote = "Сертификаты и документы об о
             data-full={imageAsset(item.src).src}
             data-title={item.title ?? ""}
             class="group block h-full w-full overflow-hidden rounded-lg border border-line bg-white shadow-sm transition hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-dusk-500"
-            aria-label={`Открыть: ${item.title ?? "сертификат"}`}
+            aria-label={format(labels.openLabel, {
+              title: item.title ?? labels.fallbackTitle,
+            })}
           >
             <span class="block aspect-[3/4] overflow-hidden bg-lav/50">
               <Image
                 src={imageAsset(item.src)}
-                alt={item.title ?? "Сертификат"}
+                alt={item.title ?? labels.fallbackTitle}
                 loading="lazy"
                 width={400}
                 height={533}
@@ -41,6 +44,6 @@ const { items, emptyNote = "Сертификаты и документы об о
       ))}
     </ul>
   ) : (
-    <p class="text-muted">{emptyNote}</p>
+    <p class="text-muted">{labels.emptyNote}</p>
   )
 }

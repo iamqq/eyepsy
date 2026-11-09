@@ -21,7 +21,7 @@ const jsonLd = [
     address: {
       "@type": "PostalAddress",
       addressLocality: site.city,
-      addressCountry: "RU",
+      addressCountry: site.country,
     },
     knowsAbout: topics.items.map((topic) => topic.title),
   },
@@ -44,10 +44,6 @@ const jsonLd = [
 ];
 ---
 
-<BaseLayout
-  description={`${person.name} — ${person.role}. Психологическое консультирование в Санкт-Петербурге и онлайн, клиническая психодиагностика.`}
-  image={photo.src}
-  jsonLd={jsonLd}
->
+<BaseLayout description={person.seoDescription} image={photo.src} jsonLd={jsonLd}>
   <Profile person={person} certificates={certificates} topics={topics} />
 </BaseLayout>
