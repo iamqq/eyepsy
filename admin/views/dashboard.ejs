@@ -1,0 +1,171 @@
+<%- include("partials/head", { title: title }) %>
+<%
+  const items = contentData?.certificates?.items ?? [];
+  const fallbackTitle = contentData?.certificates?.fallbackTitle ?? "Сертификат";
+%>
+<header class="topbar">
+  <div>
+    <p class="eyebrow">eyepsy</p>
+    <h1>Контент сайта</h1>
+  </div>
+  <div class="topbar-actions">
+    <span class="muted"><%= user %></span>
+    <form method="post" action="/logout">
+      <input type="hidden" name="_csrf" value="<%= csrf %>" />
+      <button type="submit" class="button button-ghost">Выйти</button>
+    </form>
+  </div>
+</header>
+
+<main class="dashboard">
+  <% if (savedSha) { %>
+    <div class="alert alert-success" role="status">
+      <% if (dryRun) { %>
+        Проверка пройдена. Изменения не отправлены, потому что включён DRY_RUN.
+      <% } else if (unchanged) { %>
+        Изменения не требуются: контент уже актуален.
+      <% } else { %>
+        Изменения опубликованы.
+        <% if (savedUrl) { %>
+          <a href="<%= savedUrl %>" target="_blank" rel="noopener noreferrer">Открыть коммит</a>
+        <% } else { %>
+          Коммит <code><%= savedSha %></code>.
+        <% } %>
+      <% } %>
+    </div>
+  <% } %>
+
+  <% if (pendingPush) { %>
+    <div class="alert alert-warning" role="alert">
+      <p>Есть коммит, ожидающий отправки: <code><%= pendingPush.commitSha %></code></p>
+      <p class="muted"><%= pendingPush.message %></p>
+      <form method="post" action="/push">
+        <input type="hidden" name="_csrf" value="<%= csrf %>" />
+        <button type="submit" class="button button-warning">Повторить отправку</button>
+      </form>
+    </div>
+  <% } %>
+
+  <% if (error) { %>
+    <div class="alert alert-error" role="alert">
+      <p><strong><%= error.message %></strong></p>
+      <% if (error.details && error.details.length > 0) { %>
+        <ul>
+          <% for (const detail of error.details) { %>
+            <li><%= detail %></li>
+          <% } %>
+        </ul>
+      <% } %>
+      <% if (error.output) { %>
+        <pre class="output"><%= error.output %></pre>
+      <% } %>
+    </div>
+  <% } %>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Добавить сертификат</h2>
+      <p class="muted">
+        Загрузите изображение и укажите название документа. Сервер сконвертирует
+        его в WebP, проверит сборку и добавит в галерею.
+      </p>
+
+      <form
+        method="post"
+        action="/certificates"
+        enctype="multipart/form-data"
+        class="stack"
+        data-save-form
+      >
+        <input type="hidden" name="_csrf" value="<%= csrf %>" />
+        <input type="hidden" name="baseSha" value="<%= baseSha %>" />
+
+        <label>
+          <span>Название</span>
+          <input
+            type="text"
+            name="title"
+            value="<%= certificateTitle %>"
+            maxlength="200"
+            required
+          />
+        </label>
+
+        <label>
+          <span>Изображение</span>
+          <input
+            type="file"
+            name="image"
+            accept="image/jpeg,image/png,image/webp,image/avif"
+            required
+          />
+        </label>
+
+        <img id="certificate-preview" class="preview" alt="Предпросмотр" hidden />
+        <button type="submit" class="button">Добавить сертификат</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="card-heading">
+        <div>
+          <h2>Редактировать JSON</h2>
+          <p class="muted">
+            Изменения проверяются на сервере, собираются и только потом
+            отправляются в GitHub.
+          </p>
+        </div>
+        <div class="toolbar">
+          <button type="button" id="format-json" class="button button-ghost">
+            Форматировать
+          </button>
+          <a class="button button-ghost" href="/">Перезагрузить</a>
+        </div>
+      </div>
+
+      <form method="post" action="/content" class="stack" data-save-form>
+        <input type="hidden" name="_csrf" value="<%= csrf %>" />
+        <input type="hidden" name="baseSha" value="<%= baseSha %>" />
+
+        <textarea name="json" class="json-editor" spellcheck="false"><%= contentText %></textarea>
+
+        <div class="form-footer">
+          <span id="json-status" class="status" aria-live="polite"></span>
+          <button type="submit" class="button">Сохранить JSON</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>Сертификаты в галерее</h2>
+    <p class="muted">
+      Чтобы удалить сертификат, удалите соответствующий объект из
+      <code>certificates.items</code> и сохраните JSON.
+    </p>
+
+    <% if (items.length === 0) { %>
+      <p class="muted">Сертификатов пока нет.</p>
+    <% } else { %>
+      <ul class="certificate-list">
+        <% for (const item of items) { %>
+          <li class="certificate-item">
+            <img
+              class="thumb"
+              src="/preview/<%= item.src.replace(/^\/images\//, "") %>"
+              alt="<%= item.title || fallbackTitle %>"
+              loading="lazy"
+            />
+            <div>
+              <strong><%= item.title || fallbackTitle %></strong>
+              <code><%= item.src %></code>
+            </div>
+          </li>
+        <% } %>
+      </ul>
+    <% } %>
+  </section>
+</main>
+<script src="/dashboard.js" defer></script>
+</body>
+</html>

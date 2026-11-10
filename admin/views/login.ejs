@@ -1,0 +1,42 @@
+<%- include("partials/head", { title: title }) %>
+<main class="center-shell">
+  <section class="card login-card">
+    <p class="eyebrow">eyepsy</p>
+    <h1>Вход в админку</h1>
+    <p class="muted">Введите логин и пароль контент-менеджера.</p>
+
+    <% if (error) { %>
+      <div class="alert alert-error" role="alert"><%= error %></div>
+    <% } %>
+
+    <form method="post" action="/login" class="stack">
+      <input type="hidden" name="_csrf" value="<%= csrf %>" />
+
+      <label>
+        <span>Логин</span>
+        <input
+          type="text"
+          name="username"
+          value="<%= username %>"
+          autocomplete="username"
+          required
+          autofocus
+        />
+      </label>
+
+      <label>
+        <span>Пароль</span>
+        <input
+          type="password"
+          name="password"
+          autocomplete="current-password"
+          required
+        />
+      </label>
+
+      <button type="submit" class="button">Войти</button>
+    </form>
+  </section>
+</main>
+</body>
+</html>

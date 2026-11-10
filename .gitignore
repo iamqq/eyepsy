@@ -18,6 +18,11 @@ _capture/
 .env
 .env.production
 
+# Admin service
+.admin-data/
+admin/.env
+admin/secrets/
+
 # OS / editor
 .DS_Store
 Thumbs.db

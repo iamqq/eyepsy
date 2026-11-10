@@ -1,0 +1,24 @@
+[Unit]
+Description=eyepsy content admin service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=eyepsy-admin
+Group=eyepsy-admin
+WorkingDirectory=/var/lib/eyepsy-admin/repo
+EnvironmentFile=/etc/eyepsy-admin/admin.env
+Environment=HOME=/var/lib/eyepsy-admin
+ExecStart=/usr/bin/node /var/lib/eyepsy-admin/repo/admin/server.mjs
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/eyepsy-admin
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

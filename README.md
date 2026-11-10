@@ -52,6 +52,7 @@ public/
 │   apple-touch-icon.png
 ├── robots.txt
 └── _redirects         Legacy Bitrix URL redirects for Cloudflare Pages
+admin/                 Authenticated content admin service (separate Node app)
 ```
 
 ## Editing content (no code required)
@@ -101,6 +102,22 @@ and add an entry to `certificates.items` in `src/data/content.json`:
 - Shared labels and accessibility text: `ui`.
 - Topics list: `topics`.
 - Bio, pricing, education, appointment steps, FAQ: `person`.
+
+## Content admin service
+
+A separate authenticated admin service lives in [`admin/`](admin/README.md). It
+provides one page with two forms: add a certificate and edit
+[`src/data/content.json`](src/data/content.json:1). All validation and build
+checks run on the server before the change is committed and pushed with a deploy
+key.
+
+```bash
+npm run admin:install
+npm run admin:dev
+```
+
+See [`admin/README.md`](admin/README.md) for environment variables, deploy-key
+setup, systemd, and Nginx Proxy Manager configuration.
 
 ## Local development
 

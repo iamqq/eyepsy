@@ -1,0 +1,16 @@
+<%- include("partials/head", { title: title }) %>
+<main class="center-shell">
+  <section class="card login-card">
+    <p class="eyebrow">eyepsy</p>
+    <h1><%= title %></h1>
+    <p><%= message %></p>
+
+    <% if (typeof details !== "undefined" && details && details.length > 0) { %>
+      <pre class="output"><%= details.join("\n") %></pre>
+    <% } %>
+
+    <a class="button" href="/">Вернуться в админку</a>
+  </section>
+</main>
+</body>
+</html>

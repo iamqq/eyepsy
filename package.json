@@ -13,7 +13,12 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "cert": "node scripts/add-certificate.mjs"
+    "cert": "node scripts/add-certificate.mjs",
+    "admin:install": "npm --prefix admin install",
+    "admin:dev": "npm --prefix admin run dev",
+    "admin:start": "npm --prefix admin start",
+    "admin:test": "npm --prefix admin test",
+    "admin:hash-password": "npm --prefix admin run hash-password"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
