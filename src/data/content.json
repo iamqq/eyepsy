@@ -1,6 +1,6 @@
 {
   "site": {
-    "title": "Ульяна Рязанова — клинический психолог",
+    "title": "Ульяна Рязанова — клинический психолог!",
     "description": "Ульяна Рязанова — клинический психолог. Психологическое консультирование в Санкт-Петербурге и онлайн, клиническая психодиагностика, работа с травмой, психодрама и схема-терапия.",
     "keywords": "психотерапия, психологическая помощь, психолог Санкт-Петербург, психолог онлайн, клинический психолог, психодрама, схема-терапия, EMDR, психодиагностика",
     "lang": "ru",
@@ -14,11 +14,26 @@
       "image": "/images/hero/home.webp"
     },
     "nav": [
-      { "label": "Обо мне", "href": "#about" },
-      { "label": "С чем работаю", "href": "#topics" },
-      { "label": "Образование", "href": "#education" },
-      { "label": "Дипломы", "href": "#certificates" },
-      { "label": "Контакты", "href": "#contacts" }
+      {
+        "label": "Обо мне",
+        "href": "#about"
+      },
+      {
+        "label": "С чем работаю",
+        "href": "#topics"
+      },
+      {
+        "label": "Образование",
+        "href": "#education"
+      },
+      {
+        "label": "Дипломы",
+        "href": "#certificates"
+      },
+      {
+        "label": "Контакты",
+        "href": "#contacts"
+      }
     ],
     "cta": {
       "title": "Позвольте себе помочь",
@@ -90,7 +105,10 @@
             "Онлайн или очная встреча на 55 минут для обсуждения результатов"
           ]
         },
-        "facts": ["Стоимость — 9000 рублей", "Для клиентов от 18 лет"]
+        "facts": [
+          "Стоимость — 9000 рублей",
+          "Для клиентов от 18 лет"
+        ]
       }
     ],
     "faq": [
@@ -196,32 +214,110 @@
     "fallbackTitle": "Сертификат",
     "openLabel": "Открыть: {title}",
     "items": [
-      { "src": "/images/certificates/ulyana/u1.webp", "title": "Сертификат" },
-      { "src": "/images/certificates/ulyana/u2.webp", "title": "Сертификат" },
-      { "src": "/images/certificates/ulyana/u3.webp", "title": "Сертификат" },
-      { "src": "/images/certificates/ulyana/u4.webp", "title": "Сертификат" },
-      { "src": "/images/certificates/ulyana/u5.webp", "title": "Сертификат" },
-      { "src": "/images/certificates/ulyana/u6.webp", "title": "Сертификат" },
-      { "src": "/images/certificates/ulyana/travma-ptsr-migip.webp", "title": "Психологическая травма, утрата и ПТСР" },
-      { "src": "/images/certificates/ulyana/scan-2022-07-04.webp", "title": "Документ об обучении" },
-      { "src": "/images/certificates/ulyana/kpt.webp", "title": "Когнитивно-поведенческая психотерапия" },
-      { "src": "/images/certificates/ulyana/sertifikat-ryazanova.webp", "title": "Сертификат" },
-      { "src": "/images/certificates/ulyana/photo-2022-11-17.webp", "title": "Обучение" },
-      { "src": "/images/certificates/ulyana/doc-2023-05-17.webp", "title": "Документ об обучении" },
-      { "src": "/images/certificates/ulyana/photo-2024-02-24.webp", "title": "Обучение" },
-      { "src": "/images/certificates/ulyana/rpp.webp", "title": "Расстройства пищевого поведения" },
-      { "src": "/images/certificates/ulyana/msp-otnosheniya.webp", "title": "Психодрама: межличностные отношения" },
-      { "src": "/images/certificates/ulyana/neyropsihologiya.webp", "title": "Нейропсихология" },
-      { "src": "/images/certificates/ulyana/pk-2025.webp", "title": "Повышение квалификации, 2025" },
-      { "src": "/images/certificates/ulyana/rpa-sertifikat.webp", "title": "Работа с последствиями психотравмирующих событий" },
-      { "src": "/images/certificates/ulyana/mpts-reshenie.webp", "title": "Документ об образовании" },
-      { "src": "/images/certificates/ulyana/ryazanova-2.webp", "title": "Документ об образовании" },
-      { "src": "/images/certificates/ulyana/udostoverenie.webp", "title": "Удостоверение о повышении квалификации" },
-      { "src": "/images/certificates/ulyana/obrazec-pk.webp", "title": "Образец диплома о повышении квалификации" },
-      { "src": "/images/certificates/ulyana/po-2025.webp", "title": "Профессиональное обучение, 2025" },
-      { "src": "/images/certificates/ulyana/diploma-24275662.webp", "title": "Диплом" },
-      { "src": "/images/certificates/ulyana/shema-terapiya.webp", "title": "Схема-терапия" },
-      { "src": "/images/certificates/ulyana/image-1.webp", "title": "Документ об образовании" }
+      {
+        "src": "/images/certificates/ulyana/u1.webp",
+        "title": "Сертификат"
+      },
+      {
+        "src": "/images/certificates/ulyana/u2.webp",
+        "title": "Сертификат"
+      },
+      {
+        "src": "/images/certificates/ulyana/u3.webp",
+        "title": "Сертификат"
+      },
+      {
+        "src": "/images/certificates/ulyana/u4.webp",
+        "title": "Сертификат"
+      },
+      {
+        "src": "/images/certificates/ulyana/u5.webp",
+        "title": "Сертификат"
+      },
+      {
+        "src": "/images/certificates/ulyana/u6.webp",
+        "title": "Сертификат"
+      },
+      {
+        "src": "/images/certificates/ulyana/travma-ptsr-migip.webp",
+        "title": "Психологическая травма, утрата и ПТСР"
+      },
+      {
+        "src": "/images/certificates/ulyana/scan-2022-07-04.webp",
+        "title": "Документ об обучении"
+      },
+      {
+        "src": "/images/certificates/ulyana/kpt.webp",
+        "title": "Когнитивно-поведенческая психотерапия"
+      },
+      {
+        "src": "/images/certificates/ulyana/sertifikat-ryazanova.webp",
+        "title": "Сертификат"
+      },
+      {
+        "src": "/images/certificates/ulyana/photo-2022-11-17.webp",
+        "title": "Обучение"
+      },
+      {
+        "src": "/images/certificates/ulyana/doc-2023-05-17.webp",
+        "title": "Документ об обучении"
+      },
+      {
+        "src": "/images/certificates/ulyana/photo-2024-02-24.webp",
+        "title": "Обучение"
+      },
+      {
+        "src": "/images/certificates/ulyana/rpp.webp",
+        "title": "Расстройства пищевого поведения"
+      },
+      {
+        "src": "/images/certificates/ulyana/msp-otnosheniya.webp",
+        "title": "Психодрама: межличностные отношения"
+      },
+      {
+        "src": "/images/certificates/ulyana/neyropsihologiya.webp",
+        "title": "Нейропсихология"
+      },
+      {
+        "src": "/images/certificates/ulyana/pk-2025.webp",
+        "title": "Повышение квалификации, 2025"
+      },
+      {
+        "src": "/images/certificates/ulyana/rpa-sertifikat.webp",
+        "title": "Работа с последствиями психотравмирующих событий"
+      },
+      {
+        "src": "/images/certificates/ulyana/mpts-reshenie.webp",
+        "title": "Документ об образовании"
+      },
+      {
+        "src": "/images/certificates/ulyana/ryazanova-2.webp",
+        "title": "Документ об образовании"
+      },
+      {
+        "src": "/images/certificates/ulyana/udostoverenie.webp",
+        "title": "Удостоверение о повышении квалификации"
+      },
+      {
+        "src": "/images/certificates/ulyana/obrazec-pk.webp",
+        "title": "Образец диплома о повышении квалификации"
+      },
+      {
+        "src": "/images/certificates/ulyana/po-2025.webp",
+        "title": "Профессиональное обучение, 2025"
+      },
+      {
+        "src": "/images/certificates/ulyana/diploma-24275662.webp",
+        "title": "Диплом"
+      },
+      {
+        "src": "/images/certificates/ulyana/shema-terapiya.webp",
+        "title": "Схема-терапия"
+      },
+      {
+        "src": "/images/certificates/ulyana/image-1.webp",
+        "title": "Документ об образовании"
+      }
     ]
   }
 }
